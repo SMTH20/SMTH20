@@ -1,0 +1,32 @@
+name: Generate 3D Contribution Graph
+
+on:
+  schedule:
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # REQUIRED: checkout repository (fixes git error)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Generate 3D contribution graph
+      - name: Generate 3D contribution graph
+        uses: yoshi389111/github-profile-3d-contrib@0.7.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: SMTH20
+
+      # Push generated files
+      - name: Commit & Push
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Update 3D contribution graph"
+          add: "profile-3d-contrib"
